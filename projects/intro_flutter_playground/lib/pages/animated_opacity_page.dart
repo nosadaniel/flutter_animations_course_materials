@@ -8,6 +8,14 @@ class AnimatedOpacityPage extends StatefulWidget {
 }
 
 class AnimatedOpacityPageState extends State<AnimatedOpacityPage> {
+  Curve fadeInOut = Curves.fastOutSlowIn;
+  double opacity = 1.0;
+  void toggleOpacity() {
+    setState(() {
+      opacity = opacity == 0.0 ? 1.0 : 0.0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,17 +25,17 @@ class AnimatedOpacityPageState extends State<AnimatedOpacityPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             AnimatedOpacity(
-              opacity: 1.0,
+              opacity: opacity,
               duration: Duration(seconds: 1),
-              curve: Curves.fastOutSlowIn,
+              curve: Curves.easeInBack,
               child: FlutterLogo(size: 200),
             ),
             ElevatedButton(
               child: Text('Fade Logo'),
               // TODO: Implement
-              onPressed: null,
+              onPressed: toggleOpacity,
             ),
           ],
         ),
