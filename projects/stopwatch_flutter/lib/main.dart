@@ -26,7 +26,13 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Stopwatch(),
+        child: Padding(
+          padding: EdgeInsets.all(30.0),
+          child: AspectRatio(
+            aspectRatio: 1.0,
+            child: Stopwatch(),
+          ),
+        ),
       ),
     );
   }
