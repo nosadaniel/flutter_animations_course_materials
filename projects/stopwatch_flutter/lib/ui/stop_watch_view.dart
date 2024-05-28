@@ -1,14 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:stopwatch_flutter/ui/clock_hand.dart';
 import 'package:stopwatch_flutter/ui/clock_markers.dart';
 
-import 'elapsed_time_text.dart';
-
 class StopWatchView extends StatelessWidget {
-  const StopWatchView({super.key, required this.elapsed, required this.radius});
-  final Duration elapsed;
+  const StopWatchView({super.key, required this.radius});
   final double radius;
   @override
   Widget build(BuildContext context) {
@@ -37,20 +31,6 @@ class StopWatchView extends StatelessWidget {
               radius: radius,
             ),
           ),
-        Positioned(
-          left: radius,
-          top: radius,
-          child: ClockHand(
-              rotationZAngle: pi + (2 * pi / 60000) * elapsed.inMilliseconds,
-              handThickness: 2,
-              handLength: radius * 0.99,
-              color: Colors.orange),
-        ),
-        Positioned(
-            right: 0,
-            left: 0,
-            top: radius * 1.4,
-            child: ElapsedTimeText(elapsed: elapsed)),
       ],
     );
   }

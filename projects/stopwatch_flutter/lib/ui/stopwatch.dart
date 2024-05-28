@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:stopwatch_flutter/ui/reset_button.dart';
 import 'package:stopwatch_flutter/ui/start_stop_button.dart';
+import 'package:stopwatch_flutter/ui/stop_watch_ticker_ui.dart';
 import 'package:stopwatch_flutter/ui/stop_watch_view.dart';
 
 class Stopwatch extends StatefulWidget {
@@ -11,53 +11,23 @@ class Stopwatch extends StatefulWidget {
   State<Stopwatch> createState() => _StopwatchState();
 }
 
-class _StopwatchState extends State<Stopwatch>
-    with SingleTickerProviderStateMixin {
-  late final Ticker _ticker;
-  late Duration _currentlyElapsed = Duration.zero;
-  late Duration _previouslyElapsed = Duration.zero;
-  Duration get _elapsedTime => _currentlyElapsed + _previouslyElapsed;
-
+class _StopwatchState extends State<Stopwatch> {
+  ///Global key used to manipulate the state of the StopwatchTickerUI
+  final _tickerUIKey = GlobalKey<StopWatchTickerUiState>();
   bool _isRunning = false;
-  @override
-  void initState() {
-    _ticker = createTicker((elapsed) {
-      setState(() {
-        setState(() {
-          _currentlyElapsed = elapsed;
-        });
-      });
-    });
-    //_ticker.start();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _ticker.dispose();
-    super.dispose();
-  }
 
   void _toggleRunning() {
     setState(() {
       _isRunning = !_isRunning;
-      if (_isRunning) {
-        _ticker.start();
-      } else {
-        _ticker.stop();
-        _previouslyElapsed += _currentlyElapsed;
-        _currentlyElapsed = Duration.zero;
-      }
     });
+    _tickerUIKey.currentState?.toggleRunning(_isRunning);
   }
 
-  void _resetTimer() {
-    _ticker.stop();
+  void _reset() {
     setState(() {
       _isRunning = false;
-      _currentlyElapsed = Duration.zero;
-      _previouslyElapsed = Duration.zero;
     });
+    _tickerUIKey.currentState?.resetTimer();
   }
 
   @override
@@ -67,18 +37,17 @@ class _StopwatchState extends State<Stopwatch>
         final double radius = constraint.maxWidth / 2;
         return Stack(
           children: [
-            StopWatchView(
-              elapsed: _elapsedTime,
+            StopWatchView(radius: radius),
+            StopWatchTickerUi(
               radius: radius,
+              key: _tickerUIKey,
             ),
             Align(
               alignment: Alignment.bottomLeft,
               child: SizedBox(
                 width: 80,
                 height: 80,
-                child: ResetButton(
-                  onPressed: _resetTimer,
-                ),
+                child: ResetButton(onPressed: _reset),
               ),
             ),
             Align(
