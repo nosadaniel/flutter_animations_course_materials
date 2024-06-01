@@ -5,8 +5,8 @@ import 'package:habit_tracker_flutter/ui/task/task_with_name.dart';
 
 import '../../models/task_preset.dart';
 
-class TasksGrid extends StatelessWidget {
-  const TasksGrid({super.key, required this.tasks});
+class TasksGridView extends StatelessWidget {
+  const TasksGridView({super.key, required this.tasks});
   final List<TaskPreset> tasks;
   @override
   Widget build(BuildContext context) {
