@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:habit_tracker_flutter/ui/task/task_with_name.dart';
+import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
 
-import '../../models/task_preset.dart';
+import '../../presistence/task.dart';
 
 class TasksGridView extends StatelessWidget {
   const TasksGridView({super.key, required this.tasks});
-  final List<TaskPreset> tasks;
+  final List<Task> tasks;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -27,7 +27,7 @@ class TasksGridView extends StatelessWidget {
             childAspectRatio: aspectRatio),
         itemBuilder: (context, index) {
           final task = tasks[index];
-          return TaskWithName(task: task);
+          return TaskWithNameLoader(task: task);
         },
         itemCount: tasks.length,
       );
