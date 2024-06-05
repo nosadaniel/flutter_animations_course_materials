@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/text_styles.dart';
-import '../../presistence/task.dart';
+import '../../models/task.dart';
 import '../theming/app_theme.dart';
 import 'animated_task.dart';
 

@@ -4,8 +4,8 @@ import 'package:habit_tracker_flutter/presistence/hive_data_store.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name.dart';
 import 'package:hive/hive.dart';
 
-import '../../presistence/task.dart';
-import '../../presistence/task_state.dart';
+import '../../models/task.dart';
+import '../../models/task_state.dart';
 
 class TaskWithNameLoader extends ConsumerWidget {
   const TaskWithNameLoader({super.key, required this.task});

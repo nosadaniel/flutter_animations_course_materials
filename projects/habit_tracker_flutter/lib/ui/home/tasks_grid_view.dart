@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
 
-import '../../presistence/task.dart';
+import '../../models/task.dart';
 
 class TasksGridView extends StatelessWidget {
   const TasksGridView({super.key, required this.tasks});
