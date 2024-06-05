@@ -16,6 +16,7 @@ class TaskWithNameLoader extends ConsumerWidget {
 
     final dataStore = ref.watch(dataStoreProvider);
     return ValueListenableBuilder(
+        //listen to taskState lister
         valueListenable: dataStore.taskStateListenable(task: task),
         builder: (BuildContext context, Box<TaskState> box, _) {
           //get the taskState object

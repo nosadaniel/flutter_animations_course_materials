@@ -11,7 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //get data into the widget tree
+    //get task data into the widget tree
     final dataStore = ref.watch(dataStoreProvider);
     return ValueListenableBuilder<Box<Task>>(
       valueListenable: dataStore.taskListenable(),
