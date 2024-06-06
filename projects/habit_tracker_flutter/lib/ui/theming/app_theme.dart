@@ -74,3 +74,55 @@ class AppTheme extends InheritedWidget {
   @override
   bool updateShouldNotify(AppTheme oldWidget) => data != oldWidget.data;
 }
+
+class AppThemeVariants {
+  AppThemeVariants({required List<Color> swatch})
+      : themes = [
+          AppThemeData(
+            primary: swatch[0],
+            secondary: swatch[1],
+            accent: AppColors.white,
+            accentNegative: AppColors.black,
+            taskRing: swatch[4],
+            taskIcon: AppColors.white,
+            settingsText: AppColors.white,
+            settingsLabel: AppColors.white60,
+            settingsCta: swatch[3],
+            settingsListIconBackground: swatch[2],
+            settingsInactiveIconBackground: swatch[2],
+            inactiveThemePanelRing: AppColors.grey,
+            overlayStyle: SystemUiOverlayStyle.light,
+          ),
+          AppThemeData(
+            primary: AppColors.white,
+            secondary: AppColors.lightestGrey,
+            accent: swatch[0],
+            accentNegative: AppColors.white,
+            taskRing: AppColors.lighterGrey,
+            taskIcon: swatch[0],
+            settingsText: swatch[0],
+            settingsLabel: AppColors.darkText,
+            settingsCta: swatch[0],
+            settingsListIconBackground: swatch[0],
+            settingsInactiveIconBackground: AppColors.grey,
+            inactiveThemePanelRing: AppColors.white60,
+            overlayStyle: SystemUiOverlayStyle.dark,
+          ),
+          AppThemeData(
+            primary: AppColors.black,
+            secondary: AppColors.darkestGrey,
+            accent: swatch[0],
+            accentNegative: AppColors.white,
+            taskRing: AppColors.darkerGrey,
+            taskIcon: AppColors.white,
+            settingsText: AppColors.white,
+            settingsLabel: AppColors.lightText,
+            settingsCta: swatch[0],
+            settingsListIconBackground: swatch[0],
+            settingsInactiveIconBackground: AppColors.darkerGrey,
+            inactiveThemePanelRing: AppColors.white60,
+            overlayStyle: SystemUiOverlayStyle.light,
+          ),
+        ];
+  final List<AppThemeData> themes;
+}
