@@ -13,7 +13,7 @@ class SlidingPanel extends StatelessWidget {
   final SlideDirection direction;
 
   static const paddingWidth = 9.0;
-  static const leftPanelFixedWidth = 54.0;
+  static const double leftPanelFixedWidth = 54.0;
 
   EdgeInsets get padding => direction == SlideDirection.rightToLeft
       ? const EdgeInsets.only(left: 3, right: 6)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker_flutter/presistence/hive_data_store.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_page.dart';
+import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel_animator.dart';
 import 'package:hive/hive.dart';
 import 'package:page_flip_builder/page_flip_builder.dart';
 
@@ -16,6 +17,14 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final pageFlipKey = GlobalKey<PageFlipBuilderState>();
+  final frontSlidingPanelLeftAnimatorKey =
+      GlobalKey<SlidingPanelAnimatorState>();
+  final frontSlidingPanelRightAnimatorKey =
+      GlobalKey<SlidingPanelAnimatorState>();
+  final backSlidingPanelLeftAnimatorKey =
+      GlobalKey<SlidingPanelAnimatorState>();
+  final backSlidingPanelRightAnimatorKey =
+      GlobalKey<SlidingPanelAnimatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +39,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           onFlip: () {
             pageFlipKey.currentState?.flip();
           },
+          leftAnimatorKey: frontSlidingPanelLeftAnimatorKey,
+          rightAnimatorKey: frontSlidingPanelRightAnimatorKey,
         ),
       ),
       backBuilder: (_) => ValueListenableBuilder(
@@ -40,6 +51,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           onFlip: () {
             pageFlipKey.currentState?.flip();
           },
+          leftAnimatorKey: backSlidingPanelLeftAnimatorKey,
+          rightAnimatorKey: backSlidingPanelRightAnimatorKey,
         ),
       ),
     );

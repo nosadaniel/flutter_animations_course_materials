@@ -3,6 +3,7 @@ import 'package:habit_tracker_flutter/models/app_theme_settings.dart';
 import 'package:habit_tracker_flutter/ui/home/home_page_bottom_options.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_view.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel.dart';
+import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel_animator.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/theme_selection_close.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/theme_selection_list.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
@@ -10,9 +11,29 @@ import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
 import '../../models/task.dart';
 
 class TasksGridPage extends StatelessWidget {
-  const TasksGridPage({super.key, required this.tasks, this.onFlip});
+  const TasksGridPage({
+    super.key,
+    required this.tasks,
+    this.onFlip,
+    required this.leftAnimatorKey,
+    required this.rightAnimatorKey,
+  });
   final List<Task> tasks;
   final VoidCallback? onFlip;
+
+  final GlobalKey<SlidingPanelAnimatorState> leftAnimatorKey;
+  final GlobalKey<SlidingPanelAnimatorState> rightAnimatorKey;
+
+  void _enterEditMode() {
+    leftAnimatorKey.currentState?.slideIn();
+    rightAnimatorKey.currentState?.slideIn();
+  }
+
+  void _closeEditMode() {
+    leftAnimatorKey.currentState?.slideOut();
+    rightAnimatorKey.currentState?.slideOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +44,16 @@ class TasksGridPage extends StatelessWidget {
           _TasksGridContent(
             tasks: tasks,
             onFlip: onFlip,
+            onEnterEditMode: _enterEditMode,
           ),
           Positioned(
             bottom: 6,
             left: 0,
             width: SlidingPanel.leftPanelFixedWidth,
-            child: SlidingPanel(
+            child: SlidingPanelAnimator(
+              key: leftAnimatorKey,
               direction: SlideDirection.leftToRight,
-              child: ThemeSelectionClose(),
+              child: ThemeSelectionClose(onPressed: _closeEditMode),
             ),
           ),
           Positioned(
@@ -38,7 +61,8 @@ class TasksGridPage extends StatelessWidget {
             right: 0,
             width: MediaQuery.sizeOf(context).width -
                 SlidingPanel.leftPanelFixedWidth,
-            child: SlidingPanel(
+            child: SlidingPanelAnimator(
+              key: rightAnimatorKey,
               direction: SlideDirection.rightToLeft,
               child: ThemeSelectionList(
                 currentThemeSettings:
@@ -56,9 +80,11 @@ class TasksGridPage extends StatelessWidget {
 }
 
 class _TasksGridContent extends StatelessWidget {
-  const _TasksGridContent({required this.tasks, this.onFlip});
+  const _TasksGridContent(
+      {required this.tasks, this.onFlip, this.onEnterEditMode});
   final List<Task> tasks;
   final VoidCallback? onFlip;
+  final VoidCallback? onEnterEditMode;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +96,10 @@ class _TasksGridContent extends StatelessWidget {
             child: TasksGridView(tasks: tasks),
           ),
         ),
-        HomePageBottomOptions(onFlip: onFlip)
+        HomePageBottomOptions(
+          onFlip: onFlip,
+          onEnterEditMode: onEnterEditMode,
+        )
       ],
     );
   }
