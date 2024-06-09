@@ -20,10 +20,9 @@ class HiveDataStore {
   //indexed taskState key
   static String taskStateKey(String id) => "$taskStateBoxName/$id";
   //get sides
-  String getSides(FrontOrBackSide side) =>
-      side == FrontOrBackSide.front ?
-      frontAppThemeBoxName : backAppThemeBoxName;
-
+  String getSides(FrontOrBackSide side) => side == FrontOrBackSide.front
+      ? frontAppThemeBoxName
+      : backAppThemeBoxName;
 
   //init Hive database
   Future<void> initHive() async {
@@ -91,19 +90,23 @@ class HiveDataStore {
   }
 
   //set app theme settings
-  Future<void> setAppThemeSettings({required AppThemeSettings settings, required FrontOrBackSide side})async{
+  Future<void> setAppThemeSettings(
+      {required AppThemeSettings settings,
+      required FrontOrBackSide side}) async {
     final themeKey = getSides(side);
     //get the box
     final box = Hive.box<AppThemeSettings>(themeKey);
     //update database
-    await box.put(themeKey,settings);
+    await box.put(themeKey, settings);
   }
-  //get appThemeSittings data
-  AppThemeSettings getAppThemeSettings({required FrontOrBackSide side}){
+  //get appThemeSittings data from datastore
+  // if null return default
+
+  Future<AppThemeSettings> getAppThemeSettings(
+      {required FrontOrBackSide side}) async {
     final themeKey = getSides(side);
     final box = Hive.box<AppThemeSettings>(themeKey);
     final settings = box.get(themeKey);
     return settings ?? AppThemeSettings.defaults(side);
-
-}
+  }
 }

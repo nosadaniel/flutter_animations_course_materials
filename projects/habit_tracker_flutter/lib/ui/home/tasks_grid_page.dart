@@ -17,12 +17,19 @@ class TasksGridPage extends StatelessWidget {
     this.onFlip,
     required this.leftAnimatorKey,
     required this.rightAnimatorKey,
+    required this.themeSettings,
+    this.onColorIndexSelected,
+    this.onVariantIndexSelected,
   });
   final List<Task> tasks;
   final VoidCallback? onFlip;
 
   final GlobalKey<SlidingPanelAnimatorState> leftAnimatorKey;
   final GlobalKey<SlidingPanelAnimatorState> rightAnimatorKey;
+
+  final AppThemeSettings themeSettings;
+  final ValueChanged<int>? onColorIndexSelected;
+  final ValueChanged<int>? onVariantIndexSelected;
 
   void _enterEditMode() {
     leftAnimatorKey.currentState?.slideIn();
@@ -65,11 +72,12 @@ class TasksGridPage extends StatelessWidget {
               key: rightAnimatorKey,
               direction: SlideDirection.rightToLeft,
               child: ThemeSelectionList(
-                currentThemeSettings:
-                    AppThemeSettings(colorIndex: 0, variantIndex: 0),
+                currentThemeSettings: themeSettings,
                 availableWidth: MediaQuery.sizeOf(context).width -
                     SlidingPanel.leftPanelFixedWidth -
                     SlidingPanel.paddingWidth,
+                onColorIndexSelected: onColorIndexSelected,
+                onVariantIndexSelected: onVariantIndexSelected,
               ),
             ),
           ),

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker_flutter/constants/app_assets.dart';
 import 'package:habit_tracker_flutter/constants/app_colors.dart';
+import 'package:habit_tracker_flutter/constants/front_or_back_side.dart';
 import 'package:habit_tracker_flutter/models/task.dart';
 import 'package:habit_tracker_flutter/presistence/hive_data_store.dart';
 import 'package:habit_tracker_flutter/ui/home/home_page.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme.dart';
+import 'package:habit_tracker_flutter/ui/theming/app_theme_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +29,28 @@ Future<void> main() async {
     Task.create(name: 'Brush Your Teeth', iconName: AppAssets.toothbrush),
     Task.create(name: 'Floss Your Teeth', iconName: AppAssets.dentalFloss),
   ], force: false);
+  final frontThemeSettings =
+      await dataStore.getAppThemeSettings(side: FrontOrBackSide.front);
+  final backThemeSettings =
+      await dataStore.getAppThemeSettings(side: FrontOrBackSide.back);
   runApp(ProviderScope(
     child: const MyApp(),
     //override dependency
-    overrides: [dataStoreProvider.overrideWithValue(dataStore)],
+    overrides: [
+      dataStoreProvider.overrideWithValue(dataStore),
+      frontThemeManagerProvider.overrideWith(
+        (ref) => AppThemeManager(
+            appThemeSettings: frontThemeSettings,
+            dataStore: dataStore,
+            side: FrontOrBackSide.front),
+      ),
+      backThemeManagerProvider.overrideWith(
+        (ref) => AppThemeManager(
+            appThemeSettings: backThemeSettings,
+            dataStore: dataStore,
+            side: FrontOrBackSide.back),
+      )
+    ],
   ));
 }
 
