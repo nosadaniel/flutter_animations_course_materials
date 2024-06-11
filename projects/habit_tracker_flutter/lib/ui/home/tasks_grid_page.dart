@@ -43,46 +43,51 @@ class TasksGridPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.of(context).primary,
-      body: SafeArea(
-          child: Stack(
-        children: [
-          _TasksGridContent(
-            tasks: tasks,
-            onFlip: onFlip,
-            onEnterEditMode: _enterEditMode,
-          ),
-          Positioned(
-            bottom: 6,
-            left: 0,
-            width: SlidingPanel.leftPanelFixedWidth,
-            child: SlidingPanelAnimator(
-              key: leftAnimatorKey,
-              direction: SlideDirection.leftToRight,
-              child: ThemeSelectionClose(onPressed: _closeEditMode),
-            ),
-          ),
-          Positioned(
-            bottom: 6,
-            right: 0,
-            width: MediaQuery.sizeOf(context).width -
-                SlidingPanel.leftPanelFixedWidth,
-            child: SlidingPanelAnimator(
-              key: rightAnimatorKey,
-              direction: SlideDirection.rightToLeft,
-              child: ThemeSelectionList(
-                currentThemeSettings: themeSettings,
-                availableWidth: MediaQuery.sizeOf(context).width -
-                    SlidingPanel.leftPanelFixedWidth -
-                    SlidingPanel.paddingWidth,
-                onColorIndexSelected: onColorIndexSelected,
-                onVariantIndexSelected: onVariantIndexSelected,
+    return AppTheme(
+      data: themeSettings.themeData,
+      child: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: AppTheme.of(context).primary,
+          body: SafeArea(
+              child: Stack(
+            children: [
+              _TasksGridContent(
+                tasks: tasks,
+                onFlip: onFlip,
+                onEnterEditMode: _enterEditMode,
               ),
-            ),
-          ),
-        ],
-      )),
+              Positioned(
+                bottom: 6,
+                left: 0,
+                width: SlidingPanel.leftPanelFixedWidth,
+                child: SlidingPanelAnimator(
+                  key: leftAnimatorKey,
+                  direction: SlideDirection.leftToRight,
+                  child: ThemeSelectionClose(onPressed: _closeEditMode),
+                ),
+              ),
+              Positioned(
+                bottom: 6,
+                right: 0,
+                width: MediaQuery.sizeOf(context).width -
+                    SlidingPanel.leftPanelFixedWidth,
+                child: SlidingPanelAnimator(
+                  key: rightAnimatorKey,
+                  direction: SlideDirection.rightToLeft,
+                  child: ThemeSelectionList(
+                    currentThemeSettings: themeSettings,
+                    availableWidth: MediaQuery.sizeOf(context).width -
+                        SlidingPanel.leftPanelFixedWidth -
+                        SlidingPanel.paddingWidth,
+                    onColorIndexSelected: onColorIndexSelected,
+                    onVariantIndexSelected: onVariantIndexSelected,
+                  ),
+                ),
+              ),
+            ],
+          )),
+        );
+      }),
     );
   }
 }

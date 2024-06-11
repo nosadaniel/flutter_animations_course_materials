@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:habit_tracker_flutter/constants/app_colors.dart';
 
 class AppThemeData {
@@ -15,7 +14,6 @@ class AppThemeData {
   final Color settingsListIconBackground;
   final Color settingsInactiveIconBackground;
   final Color inactiveThemePanelRing;
-  final SystemUiOverlayStyle overlayStyle;
 
   AppThemeData({
     required this.primary,
@@ -30,26 +28,7 @@ class AppThemeData {
     required this.settingsListIconBackground,
     required this.settingsInactiveIconBackground,
     required this.inactiveThemePanelRing,
-    required this.overlayStyle,
   });
-
-  factory AppThemeData.defaultWithSwatch(List<Color> swatch) {
-    return AppThemeData(
-      primary: swatch[0],
-      secondary: swatch[1],
-      accent: AppColors.white,
-      accentNegative: AppColors.black,
-      taskRing: swatch[4],
-      taskIcon: AppColors.white,
-      settingsText: AppColors.white,
-      settingsLabel: AppColors.white60,
-      settingsCta: swatch[3],
-      settingsListIconBackground: swatch[2],
-      settingsInactiveIconBackground: swatch[2],
-      inactiveThemePanelRing: AppColors.grey,
-      overlayStyle: SystemUiOverlayStyle.light,
-    );
-  }
 }
 
 // Class for reading AppThemeData via InheritedWidget
@@ -91,7 +70,6 @@ class AppThemeVariants {
             settingsListIconBackground: swatch[2],
             settingsInactiveIconBackground: swatch[2],
             inactiveThemePanelRing: AppColors.grey,
-            overlayStyle: SystemUiOverlayStyle.light,
           ),
           AppThemeData(
             primary: AppColors.white,
@@ -106,7 +84,6 @@ class AppThemeVariants {
             settingsListIconBackground: swatch[0],
             settingsInactiveIconBackground: AppColors.grey,
             inactiveThemePanelRing: AppColors.white60,
-            overlayStyle: SystemUiOverlayStyle.dark,
           ),
           AppThemeData(
             primary: AppColors.black,
@@ -121,7 +98,6 @@ class AppThemeVariants {
             settingsListIconBackground: swatch[0],
             settingsInactiveIconBackground: AppColors.darkerGrey,
             inactiveThemePanelRing: AppColors.white60,
-            overlayStyle: SystemUiOverlayStyle.light,
           ),
         ];
   final List<AppThemeData> themes;
