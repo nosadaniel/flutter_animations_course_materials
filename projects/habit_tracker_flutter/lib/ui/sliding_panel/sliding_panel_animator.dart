@@ -10,7 +10,7 @@ class SlidingPanelAnimator extends StatefulWidget {
   // ignore_for_file: no_logic_in_create_state
   @override
   State<SlidingPanelAnimator> createState() => SlidingPanelAnimatorState(
-      animationDuration: const Duration(milliseconds: 200));
+      animationDuration: const Duration(milliseconds: 500));
 }
 
 class SlidingPanelAnimatorState

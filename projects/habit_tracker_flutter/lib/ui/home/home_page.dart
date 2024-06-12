@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:habit_tracker_flutter/presistence/hive_data_store.dart';
+import 'package:habit_tracker_flutter/ui/home/tasks_grid.dart';
 import 'package:habit_tracker_flutter/ui/home/tasks_grid_page.dart';
 import 'package:habit_tracker_flutter/ui/sliding_panel/sliding_panel_animator.dart';
 import 'package:habit_tracker_flutter/ui/theming/app_theme_manager.dart';
@@ -27,6 +28,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   final backSlidingPanelRightAnimatorKey =
       GlobalKey<SlidingPanelAnimatorState>();
 
+  final gridKey = GlobalKey<TasksGridState>();
+
   @override
   Widget build(BuildContext context) {
     final dataStore = ref.watch(dataStoreProvider);
@@ -36,6 +39,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         valueListenable: dataStore.frontTaskListenable(),
         builder: (_, Box<Task> box, __) => TasksGridPage(
           key: ValueKey(1),
+          gridKey: gridKey,
           tasks: box.values.toList(),
           onFlip: () {
             pageFlipKey.currentState?.flip();
@@ -55,6 +59,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         valueListenable: dataStore.backTaskListenable(),
         builder: (_, Box<Task> box, __) => TasksGridPage(
           key: ValueKey(2),
+          gridKey: gridKey,
           tasks: box.values.toList(),
           onFlip: () {
             pageFlipKey.currentState?.flip();

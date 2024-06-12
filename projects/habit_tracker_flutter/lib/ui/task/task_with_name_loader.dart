@@ -8,8 +8,14 @@ import '../../models/task.dart';
 import '../../models/task_state.dart';
 
 class TaskWithNameLoader extends ConsumerWidget {
-  const TaskWithNameLoader({super.key, required this.task});
+  const TaskWithNameLoader(
+      {super.key,
+      required this.task,
+      this.editTaskButtonBuilder,
+      required this.isEditing});
   final Task task;
+  final bool isEditing;
+  final WidgetBuilder? editTaskButtonBuilder;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //only use watch inside a build method
@@ -24,6 +30,7 @@ class TaskWithNameLoader extends ConsumerWidget {
           //update completed value
           return TaskWithName(
             task: task,
+            isEditing: isEditing,
             completed: taskState.completed,
             onCompleted: (completed) {
               //don't use watch object inside a callback
@@ -32,6 +39,7 @@ class TaskWithNameLoader extends ConsumerWidget {
                   .read(dataStoreProvider)
                   .setTaskState(task: task, completed: completed);
             },
+            editTaskButtonBuilder: editTaskButtonBuilder,
           );
         });
   }
