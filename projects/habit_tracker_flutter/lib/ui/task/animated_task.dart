@@ -5,15 +5,25 @@ import 'package:habit_tracker_flutter/ui/task/task_completion_ring.dart';
 import '../common_widgets/centered_svg_icon.dart';
 import '../theming/app_theme.dart';
 
+///[iconName] takes the first letter of the iconName if icon not found.
+///[completed] indicate that animation is 1.0 .
+///[onCompleted] is called inside [_handleStatusUpdateListener] when status is completed.
+///[isEditing] by default is false, use to indicate if task is being edited
+///[hasCompletedState] by default is true, use to indicate that animation has completed
+/// and used to indicate when to reset animationController in the [_handleStatusUpdateListener] callback
 class AnimatedTask extends StatefulWidget {
   const AnimatedTask(
       {super.key,
       required this.iconName,
       required this.completed,
-      this.onCompleted});
+      this.onCompleted,
+      this.isEditing = false,
+      this.hasCompletedState = true});
   final String iconName;
   final bool completed;
   final ValueChanged<bool>? onCompleted;
+  final bool isEditing;
+  final bool hasCompletedState;
   @override
   State<AnimatedTask> createState() => _AnimatedTaskState();
 }
@@ -37,7 +47,7 @@ class _AnimatedTaskState extends State<AnimatedTask>
     );
 
     //initialize animation listener
-    _animationController.addStatusListener(handleStatusUpdateListener);
+    _animationController.addStatusListener(_handleStatusUpdateListener);
 
     super.initState();
   }
@@ -45,35 +55,43 @@ class _AnimatedTaskState extends State<AnimatedTask>
   @override
   void dispose() {
     _animationController.dispose();
-    _animationController.removeStatusListener(handleStatusUpdateListener);
+    _animationController.removeStatusListener(_handleStatusUpdateListener);
     super.dispose();
   }
 
-  void handleStatusUpdateListener(AnimationStatus status) {
+  void _handleStatusUpdateListener(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      //set onCompleted callable to true
+      //call onCompleted and set to true when animation status is completed
       //call () for calling nullable callback
       widget.onCompleted?.call(true);
-      if (mounted) {
-        setState(() => _showCheckIcon = true);
+      if (widget.hasCompletedState) {
+        if (mounted) {
+          // show the checkIcon
+          setState(() => _showCheckIcon = true);
+        }
         //reset checkIcon to false after 1 sec delay
+        // then hide the checkIcon
         Future.delayed(Duration(seconds: 1), () {
           if (mounted) {
             setState(() => _showCheckIcon = false);
           }
         });
+      } else {
+        _animationController.reset();
       }
     }
   }
 
   void _handleTapCancel() {
-    if (_animationController.status != AnimationStatus.completed) {
+    if (!widget.isEditing &&
+        _animationController.status != AnimationStatus.completed) {
       _animationController.reverse();
     }
   }
 
   void _handleTapDown(TapDownDetails pressUp) {
-    if (!widget.completed &&
+    if (!widget.isEditing &&
+        !widget.completed &&
         _animationController.status != AnimationStatus.completed) {
       _animationController.forward();
     } //reset animation for testing

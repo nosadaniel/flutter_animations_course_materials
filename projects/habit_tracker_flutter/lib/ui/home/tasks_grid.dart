@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:habit_tracker_flutter/ui/animation/staggered_scale_animated_widget.dart';
+import 'package:habit_tracker_flutter/ui/animation/custom_fade_transition.dart';
+import 'package:habit_tracker_flutter/ui/animation/staggered_scale_transition.dart';
 import 'package:habit_tracker_flutter/ui/common_widgets/edit_task_button.dart';
 import 'package:habit_tracker_flutter/ui/task/add_task_item.dart';
 import 'package:habit_tracker_flutter/ui/task/task_with_name_loader.dart';
@@ -23,10 +24,16 @@ class TasksGridState extends State<TasksGrid>
 
   void enterEditMode() {
     _animationController.forward();
+    setState(() {
+      _isEditing = true;
+    });
   }
 
   void exitEditMode() {
     _animationController.reverse();
+    setState(() {
+      _isEditing = false;
+    });
   }
 
   @override
@@ -41,6 +48,8 @@ class TasksGridState extends State<TasksGrid>
     _animationController.dispose();
     super.dispose();
   }
+
+  bool _isEditing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +71,18 @@ class TasksGridState extends State<TasksGrid>
             childAspectRatio: aspectRatio),
         itemBuilder: (context, index) {
           if (index == widget.tasks.length) {
-            return AddTaskItem(
-              onCompleted: () => print("add new item"),
+            return CustomFadeTransition(
+              animation: _animationController,
+              child: AddTaskItem(
+                onCompleted: _isEditing ? () => print("add new item") : null,
+              ),
             );
           }
           final task = widget.tasks[index];
           return TaskWithNameLoader(
             task: task,
-            isEditing: false,
-            editTaskButtonBuilder: (_) => StaggeredScaleAnimatedWidget(
+            isEditing: _isEditing,
+            editTaskButtonBuilder: (_) => StaggeredScaleTransition(
                 animation: _animationController,
                 index: index,
                 child: EditTaskButton(onPressed: () => print("Edit Item"))),

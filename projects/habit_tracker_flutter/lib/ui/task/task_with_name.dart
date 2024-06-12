@@ -13,7 +13,7 @@ class TaskWithName extends StatelessWidget {
       this.completed = false,
       this.onCompleted,
       this.editTaskButtonBuilder,
-      required this.isEditing,
+      this.isEditing = false,
       this.hasCompletedState = true});
   final Task task;
   final bool completed;
@@ -33,9 +33,11 @@ class TaskWithName extends StatelessWidget {
           child: Stack(
             children: [
               AnimatedTask(
+                isEditing: isEditing,
                 iconName: task.iconName,
                 completed: completed,
                 onCompleted: onCompleted,
+                hasCompletedState: hasCompletedState,
               ),
               if (editTaskButtonBuilder != null)
                 Positioned.fill(

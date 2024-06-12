@@ -5,15 +5,14 @@ import 'package:habit_tracker_flutter/ui/task/task_with_name.dart';
 import '../../models/task.dart';
 
 class AddTaskItem extends StatelessWidget {
-  const AddTaskItem({super.key, this.onCompleted, this.isEditing = false});
+  const AddTaskItem({super.key, this.onCompleted});
   final VoidCallback? onCompleted;
-  final bool isEditing;
+
   @override
   Widget build(BuildContext context) {
     return TaskWithName(
-      task: Task.create(name: "Add a task", iconName: AppAssets.plus),
       hasCompletedState: false,
-      isEditing: isEditing,
+      task: Task.create(name: "Add a task", iconName: AppAssets.plus),
       onCompleted: (completed) => onCompleted?.call(),
     );
   }
